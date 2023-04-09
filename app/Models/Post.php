@@ -17,6 +17,17 @@ class Post extends Model
         'body',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
+    ];
+
+    // 日付がUTCになってしまうので、日本時間に変換する。
+    protected function serializeDate(\DateTimeInterface $date)
+    {
+        return $date->timezone('Asia/Tokyo');
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

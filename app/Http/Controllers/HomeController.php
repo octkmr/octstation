@@ -16,11 +16,16 @@ class HomeController extends Controller
      */
     public function index(): \Inertia\Response
     {
-        $posts = Post::with('user')->get();
+        $posts = Post::with('user')->orderByDesc('created_at')->get();
+        if (session('isSuccess')) {
+            $isPostCreated = session('isSuccess');
+        }
+
         return Inertia::render(
             'Home',
             [
                 'posts' => $posts,
+                'isPostCreated' => $isPostCreated ?? "",
             ]
         );
     }
